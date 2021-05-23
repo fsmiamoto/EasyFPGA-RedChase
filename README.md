@@ -2,7 +2,8 @@
 
 A little game made with the RZ-EasyFPGA A2.2 board!
 
-Builds upon the project available at [EasyFPGA-VGA](https://github.com/fsmiamoto/EasyFPGA-VGA).
+Builds upon the project available at [EasyFPGA-VGA](https://github.com/fsmiamoto/EasyFPGA-VGA). 
+You can checkout the README there for more details on how to flash the code to your board.
 
 [Game Preview](https://user-images.githubusercontent.com/20388082/119267430-eda61200-bbc4-11eb-8854-7cf4896520ca.mp4)
 
