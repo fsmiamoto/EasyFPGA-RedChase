@@ -22,10 +22,11 @@ entity Game is
 end entity Game;
 
 architecture rtl of Game is
-  constant SQUARE_SIZE : integer := 20; -- In pixels
-  constant APPLE_SIZE  : integer := 20;
+  constant SQUARE_SIZE                  : integer := 20; -- In pixels
+  constant APPLE_SIZE                   : integer := 20;
+  constant SQUARE_DEFAULT_SPEED_DIVIDER : integer := 125_000;
 
-  signal square_speed_divider : integer := 125_000;
+  signal square_speed_divider : integer := SQUARE_DEFAULT_SPEED_DIVIDER;
 
   constant START_STATE   : integer := 0;
   constant PLAYING_STATE : integer := 1;
@@ -46,7 +47,7 @@ architecture rtl of Game is
 
   -- The horizontal random sequence generation will be done in a different pace
   -- while the horizontal one will follow the VGA clock, leading to a greater randomness feeling
-  signal clk_x : std_logic;
+  signal rand_x_clk : std_logic;
 
   signal square_x           : integer range HDATA_BEGIN to HDATA_END := HDATA_BEGIN + H_HALF - SQUARE_SIZE/2;
   signal square_y           : integer range VDATA_BEGIN to VDATA_END := VDATA_BEGIN + V_HALF - SQUARE_SIZE/2;
@@ -160,13 +161,13 @@ begin
     should_reset      => should_reset
   );
 
-  clk_divider_x : ClockDivider
+  rand_x_clk_divider : ClockDivider
   generic map(
     divide_by => 5
   )
   port map(
     clk_in  => vga_clk,
-    clk_out => clk_x
+    clk_out => rand_x_clk
   );
 
   display_clk_divider : ClockDivider
@@ -179,7 +180,7 @@ begin
   );
 
   rand_x : RandInt port map(
-    clk         => clk_x,
+    clk         => rand_x_clk,
     upper_limit => 700, -- TODO: Investigate why a magic number is needed
     lower_limit => HDATA_BEGIN,
     rand_int    => random_x
@@ -233,10 +234,10 @@ begin
   begin
     if (falling_edge(vga_clk)) then
       if (should_reset = '1') then
-        -- Resetting the game or collision between square and apple
+        -- Resetting the game
         apple_y              <= random_y;
         apple_x              <= random_x;
-        square_speed_divider <= 150_000;
+        square_speed_divider <= SQUARE_DEFAULT_SPEED_DIVIDER;
         score                <= 0;
       elsif (should_draw_square and should_draw_apple) then
         -- Collision between square and apple
