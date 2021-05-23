@@ -10,21 +10,21 @@ entity Game is
     rgb             : out std_logic_vector (2 downto 0); -- Pins 106, 105 and 104
     hsync           : out std_logic; -- Pin 101
     vsync           : out std_logic; -- Pin 103
-    up              : in std_logic;
-    down            : in std_logic;
-    left            : in std_logic;
-    right           : in std_logic;
-    ps2_data        : in std_logic;
-    ps2_clk         : in std_logic;
-    seven_seg_digit : out std_logic_vector(3 downto 0);
-    seven_seg_data  : out std_logic_vector(6 downto 0)
+    up              : in std_logic; -- Pin 88
+    down            : in std_logic; -- Pin 89
+    left            : in std_logic; -- Pin 90
+    right           : in std_logic; -- Pin 91
+    ps2_data        : in std_logic; -- Pin 120
+    ps2_clk         : in std_logic; -- Pin 119
+    seven_seg_digit : out std_logic_vector(3 downto 0); -- Pins 137,136,135,133
+    seven_seg_data  : out std_logic_vector(6 downto 0) -- Pins 124,126,132,129,125,121,128
   );
 end entity Game;
 
 architecture rtl of Game is
   constant SQUARE_SIZE                  : integer := 20; -- In pixels
   constant APPLE_SIZE                   : integer := 20;
-  constant SQUARE_DEFAULT_SPEED_DIVIDER : integer := 125_000;
+  constant SQUARE_DEFAULT_SPEED_DIVIDER : integer := 100_000;
 
   constant START_STATE   : integer := 0;
   constant PLAYING_STATE : integer := 1;
@@ -176,14 +176,14 @@ begin
 
   rand_x : RandInt port map(
     clk         => rand_x_clk,
-    upper_limit => 700, -- TODO: Investigate why a magic number is needed
+    upper_limit => HDATA_END - APPLE_SIZE,
     lower_limit => HDATA_BEGIN,
     rand_int    => random_x
   );
 
   rand_y : RandInt port map(
     clk         => vga_clk,
-    upper_limit => 400, -- TODO: Investigate why a magic number is needed
+    upper_limit => VDATA_END - APPLE_SIZE,
     lower_limit => VDATA_BEGIN,
     rand_int    => random_y
   );
