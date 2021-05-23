@@ -11,19 +11,12 @@ You can checkout the README there for more details on how to flash the code to y
 
 The following I/O interfaces of the board were used in this project:
 
-<table>
-<td>
-   <ul>
-      <li>VGA: Used for displaying the game</li>
-      <li>PS2: Attached to a keyboard for use as a input</li>
-      <li>7 Segment displays: Used to show the current score</li>
-      <li>Push-buttons: Used for resetting the game.</li>
-   </ul>
-</td>
-<td>
-   <img src="./docs/interfaces.jpg" height="400"/>
-</td>
-</table>
+- VGA: Used for displaying the game
+- PS2: Attached to a keyboard for use as a input
+- 7 Segment displays: Used to show the current score
+- Push-buttons: Used for resetting the game
+
+<img src="./docs/RedChase.png" height="400"/>
 
 ## Gameplay
 
