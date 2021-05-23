@@ -6,3 +6,4 @@ simulation
 *.bak*
 *temp*
 .qsys*
+*.qws
