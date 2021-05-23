@@ -26,17 +26,17 @@ architecture rtl of Game is
   constant APPLE_SIZE                   : integer := 20;
   constant SQUARE_DEFAULT_SPEED_DIVIDER : integer := 125_000;
 
-  signal square_speed_divider : integer := SQUARE_DEFAULT_SPEED_DIVIDER;
-
   constant START_STATE   : integer := 0;
   constant PLAYING_STATE : integer := 1;
   constant DEAD_STATE    : integer := 2;
 
-  signal score                : integer range 0 to 99 := 0;
-  signal score_seven_seg_0    : std_logic_vector(6 downto 0);
-  signal score_seven_seg_1    : std_logic_vector(6 downto 0);
-  signal score_active_display : integer range 0 to 1 := 0;
-  signal score_display_clk    : std_logic;
+  signal square_speed_divider : integer := SQUARE_DEFAULT_SPEED_DIVIDER;
+
+  signal score              : integer range 0 to 99 := 0;
+  signal score_seven_seg_0  : std_logic_vector(6 downto 0);
+  signal score_seven_seg_1  : std_logic_vector(6 downto 0);
+  signal score_active_digit : integer range 0 to 1 := 0;
+  signal score_display_clk  : std_logic;
 
   -- VGA Clock - 25 MHz clock derived from the 50MHz built-in clock
   signal vga_clk : std_logic;
@@ -58,11 +58,6 @@ architecture rtl of Game is
 
   signal random_x : integer;
   signal random_y : integer;
-
-  signal up_debounced    : std_logic;
-  signal down_debounced  : std_logic;
-  signal left_debounced  : std_logic;
-  signal right_debounced : std_logic;
 
   signal is_square_out_of_bounds : boolean;
   signal should_move_square      : boolean;
@@ -208,16 +203,14 @@ begin
   is_square_out_of_bounds <= square_y <= VDATA_BEGIN or square_y >= VDATA_END - SQUARE_SIZE or square_x <= HDATA_BEGIN or square_x >= HDATA_END - SQUARE_SIZE;
 
   seven_seg_digit <=
-    "1110" when score_active_display = 0 else
-    "1101" when score_active_display = 1 else
+    "1110" when score_active_digit = 0 else
+    "1101" when score_active_digit = 1 else
     "1111";
 
   seven_seg_data <=
-    score_seven_seg_0 when score_active_display = 0 else
-    score_seven_seg_1 when score_active_display = 1 else
+    score_seven_seg_0 when score_active_digit = 0 else
+    score_seven_seg_1 when score_active_digit = 1 else
     (others => '1');
-
-  -- score_active_display <= 1;
 
   Square(hpos, vpos, square_x, square_y, SQUARE_SIZE, should_draw_square);
   Square(hpos, vpos, apple_x, apple_y, APPLE_SIZE, should_draw_apple);
@@ -334,10 +327,10 @@ begin
     end if;
   end process square_movement;
 
-  process (score_display_clk)
+  seven_seg_digit_mux : process (score_display_clk)
   begin
     if (rising_edge(score_display_clk)) then
-      score_active_display <= score_active_display + 1;
+      score_active_digit <= score_active_digit + 1;
     end if;
   end process;
 end architecture;
