@@ -12,8 +12,8 @@ entity RandInt is
   );
 end RandInt;
 
-architecture rtl of RandInt is
-  constant step       : integer := 19; -- Arbitrary number, preferably prime.
+architecture rtl of RandInt is 
+  constant step       : integer := 19; -- Arbitrary number, preferably prime, between 1 and upper_limit - lower_limit - 1.
   signal rand_int_sig : integer := lower_limit;
 begin
   process (clk)
