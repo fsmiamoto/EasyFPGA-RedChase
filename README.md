@@ -34,10 +34,13 @@ red apple and avoid the edges.
 
 ### States
 
-In the game you can basically be in one of the following three states:
-- *Start*: In this one you have to press any key to start playing.
-- *Playing*: You're now playing and should start to gather points.
-- *Dead*: Well, you've just lost. But can check out your score on the Seven Segment displays and take note of you record :D
+While gaming, you can only be in one of the three following states:
+- *Start*: An entrypoint to the game. In this one you have to press any key on the 
+keyboard to start playing.
+- *Playing*: You're now playing and should start to gather points! Be careful not to hit
+    the _walls_ though.
+- *Dead*: Well, you've just lost :(  
+But you can check out your score on the Seven Segment displays and take note of it ;)
 
 ![Game states](./docs/State.png)
 
